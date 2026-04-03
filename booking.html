@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Бронирование квеста | Мир Квестов</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header
+      class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-purple-100 shadow-sm dark:bg-gray-800/80 dark:border-gray-700"
+    >
+      <div
+        class="container mx-auto px-5 lg:px-8 py-3 flex items-center justify-between flex-wrap"
+      >
+        <a href="index.html" class="flex items-center space-x-2">
+          <i
+            class="fas fa-dungeon text-3xl text-purple-600 dark:text-purple-400"
+          ></i>
+          <span
+            class="font-bold text-xl tracking-tight bg-gradient-to-r from-purple-700 to-violet-500 bg-clip-text text-transparent dark:from-purple-400 dark:to-violet-300"
+            >Мир<span class="text-gray-800 dark:text-gray-200"
+              >Квестов</span
+            ></span
+          >
+        </a>
+        <nav
+          class="hidden md:flex items-center space-x-7 text-gray-700 font-medium dark:text-gray-200"
+        >
+          <a
+            href="index.html"
+            class="hover:text-purple-600 transition dark:hover:text-purple-400"
+            >Главная</a
+          >
+          <a
+            href="auth.html"
+            class="hover:text-purple-600 transition dark:hover:text-purple-400"
+            >Вход / Регистрация</a
+          >
+          <a
+            href="city.html"
+            class="hover:text-purple-600 transition dark:hover:text-purple-400"
+            >Выбор города</a
+          >
+          <a
+            href="news.html"
+            class="hover:text-purple-600 transition dark:hover:text-purple-400"
+            >Новости</a
+          >
+        </nav>
+        <div class="flex items-center gap-3">
+          <div
+            class="hidden md:flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-full text-sm text-purple-700 dark:bg-purple-900/50 dark:text-purple-300"
+          >
+            <i
+              class="fas fa-map-marker-alt text-purple-500 text-xs dark:text-purple-400"
+            ></i>
+            <span class="city-display">Альметьевск</span>
+          </div>
+          <button
+            id="themeToggle"
+            class="text-purple-700 dark:text-purple-400 text-xl focus:outline-none"
+          >
+            <i id="themeIcon" class="fas fa-moon"></i>
+          </button>
+          <button
+            id="menuToggle"
+            class="md:hidden text-2xl text-purple-700 dark:text-purple-400 focus:outline-none"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      <div
+        id="mobileMenu"
+        class="mobile-menu md:hidden bg-white/95 backdrop-blur-md px-5 pb-2 border-b border-purple-100 dark:bg-gray-800/95 dark:border-gray-700"
+      >
+        <div class="flex flex-col space-y-3 pt-2 pb-3">
+          <a
+            href="index.html"
+            class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
+            >Главная</a
+          >
+          <a
+            href="auth.html"
+            class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
+            >Вход / Регистрация</a
+          >
+          <a
+            href="city.html"
+            class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
+            >Выбор города</a
+          >
+          <a
+            href="news.html"
+            class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
+            >Новости</a
+          >
+          <div
+            class="flex items-center gap-2 pt-2 text-sm text-purple-700 border-t border-gray-100 mt-1 dark:text-purple-300 dark:border-gray-700"
+          >
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="city-display">Альметьевск</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-5 lg:px-8 py-8 md:py-12">
+      <div
+        class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden dark:bg-gray-800"
+      >
+        <div
+          class="bg-gradient-to-r from-purple-500 to-indigo-600 p-6 text-white"
+        >
+          <h1 class="text-2xl md:text-3xl font-bold">Бронирование квеста</h1>
+          <p class="text-purple-100 mt-1">
+            Заполните форму, чтобы забронировать место
+          </p>
+        </div>
+        <div class="p-6 md:p-8">
+          <div
+            id="questInfo"
+            class="bg-purple-50 rounded-xl p-4 mb-6 dark:bg-purple-900/30"
+          ></div>
+          <form id="bookingForm" class="space-y-5">
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Дата</label
+              ><input
+                type="date"
+                id="bookingDate"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Время</label
+              ><select
+                id="bookingTime"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+              >
+                <option value="">Выберите время</option>
+                <option value="10:00">10:00</option>
+                <option value="12:00">12:00</option>
+                <option value="14:00">14:00</option>
+                <option value="16:00">16:00</option>
+                <option value="18:00">18:00</option>
+                <option value="20:00">20:00</option>
+              </select>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Количество игроков</label
+              ><select
+                id="playersCount"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+              >
+                <option value="2">2 игрока</option>
+                <option value="3">3 игрока</option>
+                <option value="4">4 игрока</option>
+                <option value="5">5 игроков</option>
+                <option value="6">6 игроков</option>
+              </select>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Ваше имя</label
+              ><input
+                type="text"
+                id="userName"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                placeholder="Иван Иванов"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Телефон</label
+              ><input
+                type="tel"
+                id="userPhone"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                placeholder="+7 (XXX) XXX-XX-XX"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Email</label
+              ><input
+                type="email"
+                id="userEmail"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                placeholder="example@mail.ru"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Комментарий (опционально)</label
+              ><textarea
+                id="userComment"
+                rows="3"
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                placeholder="Особые пожелания..."
+              ></textarea>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-4 dark:bg-gray-700">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-gray-600 dark:text-gray-300">Стоимость:</span
+                ><span
+                  id="totalPrice"
+                  class="text-xl font-bold text-purple-700 dark:text-purple-400"
+                  >0 ₽</span
+                >
+              </div>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                * Цена за команду, оплата на месте
+              </p>
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition btn-primary shadow-md"
+            >
+              <i class="fas fa-calendar-check mr-2"></i> Забронировать
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      class="bg-white border-t border-purple-100 mt-12 py-8 dark:bg-gray-900 dark:border-gray-800"
+    >
+      <div
+        class="container mx-auto px-5 lg:px-8 text-center text-gray-500 text-sm dark:text-gray-400"
+      >
+        © 2026 Мир Квестов — лучшие квесты в твоем городе.
+      </div>
+    </footer>
+  </body>
+</html>

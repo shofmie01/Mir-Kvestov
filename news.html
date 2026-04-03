@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости квестов | Мир Квестов</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили для модального окна */
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .news-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -12px rgba(0,0,0,0.2);
+        }
+        .category-tab.active {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        .category-tab:not(.active):hover {
+            background-color: #e9d5ff;
+            color: #6b21a5;
+        }
+        html.dark .category-tab:not(.active):hover {
+            background-color: #4c1d95;
+            color: #e9d5ff;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-purple-100 shadow-sm dark:bg-gray-800/80 dark:border-gray-700">
+        <div class="container mx-auto px-5 lg:px-8 py-3 flex items-center justify-between flex-wrap">
+            <a href="index.html" class="flex items-center space-x-2">
+                <i class="fas fa-dungeon text-3xl text-purple-600 dark:text-purple-400"></i>
+                <span class="font-bold text-xl tracking-tight bg-gradient-to-r from-purple-700 to-violet-500 bg-clip-text text-transparent dark:from-purple-400 dark:to-violet-300">Мир<span class="text-gray-800 dark:text-gray-200">Квестов</span></span>
+            </a>
+            <nav class="hidden md:flex items-center space-x-7 text-gray-700 font-medium dark:text-gray-200">
+                <a href="index.html" class="hover:text-purple-600 transition dark:hover:text-purple-400">Главная</a>
+                <a href="auth.html" class="hover:text-purple-600 transition dark:hover:text-purple-400">Вход / Регистрация</a>
+                <a href="city.html" class="hover:text-purple-600 transition dark:hover:text-purple-400">Выбор города</a>
+                <a href="news.html" class="hover:text-purple-600 transition dark:hover:text-purple-400 font-semibold text-purple-700 dark:text-purple-400">Новости</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-full text-sm text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">
+                    <i class="fas fa-map-marker-alt text-purple-500 text-xs dark:text-purple-400"></i>
+                    <span class="city-display">Альметьевск</span>
+                </div>
+                <button id="themeToggle" class="text-purple-700 dark:text-purple-400 text-xl focus:outline-none"><i id="themeIcon" class="fas fa-moon"></i></button>
+                <button id="menuToggle" class="md:hidden text-2xl text-purple-700 dark:text-purple-400 focus:outline-none"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="mobile-menu md:hidden bg-white/95 backdrop-blur-md px-5 pb-2 border-b border-purple-100 dark:bg-gray-800/95 dark:border-gray-700">
+            <div class="flex flex-col space-y-3 pt-2 pb-3">
+                <a href="index.html" class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400">Главная</a>
+                <a href="auth.html" class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400">Вход / Регистрация</a>
+                <a href="city.html" class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400">Выбор города</a>
+                <a href="news.html" class="py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400">Новости</a>
+                <div class="flex items-center gap-2 pt-2 text-sm text-purple-700 border-t border-gray-100 mt-1 dark:text-purple-300 dark:border-gray-700">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="city-display">Альметьевск</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-5 lg:px-8 py-12">
+        <div class="max-w-6xl mx-auto">
+            <!-- Заголовок с анимацией -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-100 mb-4 flex items-center justify-center gap-3">
+                    Новости мира квестов
+                </h1>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Свежие события, обновления и анонсы приключений
+                </p>
+            </div>
+
+            <!-- Фильтры: категории + поиск -->
+            <div class="bg-white rounded-2xl shadow-sm border border-purple-100 p-5 mb-8 dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <!-- Табы категорий -->
+                    <div class="flex flex-wrap gap-2" id="categoryTabs">
+                        <button data-cat="all" class="category-tab active bg-purple-600 text-white px-4 py-2 rounded-full transition-all">Все новости</button>
+                        <button data-cat="VR" class="category-tab bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-all dark:bg-gray-700 dark:text-gray-200">VR</button>
+                        <button data-cat="События" class="category-tab bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-all dark:bg-gray-700 dark:text-gray-200">События</button>
+                        <button data-cat="Награды" class="category-tab bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-all dark:bg-gray-700 dark:text-gray-200">Награды</button>
+                        <button data-cat="Акции" class="category-tab bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-all dark:bg-gray-700 dark:text-gray-200">Акции</button>
+                        <button data-cat="Новинки" class="category-tab bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-all dark:bg-gray-700 dark:text-gray-200">Новинки</button>
+                    </div>
+                    <!-- Поиск -->
+                    <div class="relative">
+                        <input type="text" id="searchNews" placeholder="🔍 Поиск по новостям..." 
+                               class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-purple-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Сетка новостей -->
+            <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Карточки будут сгенерированы динамически -->
+            </div>
+
+            <!-- Сообщение, если новостей нет -->
+            <div id="noNewsMessage" class="text-center py-12 text-gray-500 dark:text-gray-400 hidden">
+                <i class="fas fa-newspaper text-5xl mb-3 opacity-50"></i>
+                <p>Новости не найдены. Попробуйте изменить фильтр или поиск.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно для полного текста -->
+    <div id="newsModal" class="modal fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden transition-all">
+        <div class="bg-white rounded-2xl max-w-lg w-full mx-4 p-6 relative dark:bg-gray-800">
+            <button id="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <h3 id="modalTitle" class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2"></h3>
+            <p id="modalDate" class="text-sm text-gray-500 dark:text-gray-400 mb-4"></p>
+            <p id="modalText" class="text-gray-700 dark:text-gray-300 leading-relaxed"></p>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-purple-100 mt-12 py-8 dark:bg-gray-900 dark:border-gray-800">
+        <div class="container mx-auto px-5 lg:px-8 text-center text-gray-500 text-sm dark:text-gray-400">© 2026 Мир Квестов — будьте в курсе событий!</div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
